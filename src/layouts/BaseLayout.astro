@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+import { business, openingHoursSpecification } from '../lib/business';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: business.name,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.streetAddress,
+    postalCode: business.postalCode,
+    addressLocality: business.city,
+    addressCountry: 'FR',
+  },
+  telephone: business.phoneHref,
+  servesCuisine: ['Pizza', 'Kebab', 'Burger', 'Tacos', 'Quesadilla', 'Fast food'],
+  priceRange: '€€',
+  acceptsReservations: false,
+  openingHoursSpecification,
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#14120f" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="bg-white text-ink-900 antialiased">
+    <slot />
+  </body>
+</html>

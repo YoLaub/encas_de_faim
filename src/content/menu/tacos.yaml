@@ -1,0 +1,32 @@
+order: 2
+title: "Nos tacos"
+note: "+1,50€ avec boisson · +1,50€ supplément viande"
+items:
+  - name: "Tacos steak haché"
+    description: "Steak, cheddar, frites, salade, tomate, oignon, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 9.5
+      - label: "avec frites"
+        amount: 10.5
+  - name: "Tacos poulet"
+    description: "Filet de poulet, cheddar, frites, salade, tomate, oignon, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 9.5
+      - label: "avec frites"
+        amount: 10.5
+  - name: "Tacos kebab"
+    description: "Viande de kebab, cheddar, frites, salade, tomate, oignon, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 9.5
+      - label: "avec frites"
+        amount: 10.5
+  - name: "Tacos nuggets"
+    description: "Nuggets de poulet, cheddar, frites, salade, tomate, oignon, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 9.5
+      - label: "avec frites"
+        amount: 10.5

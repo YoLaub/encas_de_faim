@@ -1,0 +1,7 @@
+order: 6
+title: "Menu enfant"
+items:
+  - name: "Menu enfant"
+    description: "Pizza bambino jambon/fromage, ou kebab/frites, ou chicken nuggets/frites, + une boisson + un jouet"
+    prices:
+      - amount: 9.5

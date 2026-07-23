@@ -1,0 +1,35 @@
+order: 7
+title: "Nos boissons"
+items:
+  - name: "Softs"
+    description: "33 cl"
+    prices:
+      - amount: 2.0
+  - name: "Bouteille Coca"
+    description: "1,25 l"
+    prices:
+      - amount: 4.0
+  - name: "Eau minérale plate"
+    description: "50 cl"
+    prices:
+      - amount: 1.5
+  - name: "Eau gazeuse"
+    description: "50 cl"
+    prices:
+      - amount: 2.0
+  - name: "Bière Heineken ou 1664"
+    description: "33 cl"
+    prices:
+      - amount: 4.0
+  - name: "Vin rosé"
+    description: "Rosato delle Venezie, 75 cl"
+    prices:
+      - amount: 11.5
+  - name: "Vin rosé"
+    description: "Bardolino Classico Chiaretto (AOP), 37,5 cl"
+    prices:
+      - amount: 7.0
+  - name: "Vin rouge"
+    description: "Touraine Gamay (AOP), 75 cl"
+    prices:
+      - amount: 11.5

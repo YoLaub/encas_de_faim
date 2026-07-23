@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MenuCategory from '../components/MenuCategory.astro';
+import AiTeaserEasterEgg from '../components/AiTeaserEasterEgg.astro';
+import { business, openingHours } from '../lib/business';
+
+const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="en-cas 2 faim — Pizzas, kebabs, burgers, tacos à Elven"
+  description="Fast food en-cas 2 faim à Elven (56250) : pizzas, kebabs, burgers, tacos, quesadillas. Sur place ou à emporter, tous les jours."
+>
+  <a
+    href="#menu"
+    class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-ink-900"
+  >
+    Aller au menu
+  </a>
+
+  <header class="bg-ink-900 px-4 py-14 text-center text-white sm:py-20">
+    <p class="font-display text-sm uppercase tracking-[0.3em] text-brand-300">Elven · 56250</p>
+    <h1 class="mt-3 font-display text-4xl font-bold sm:text-5xl">
+      en-cas <span class="text-brand-400">2</span> faim
+    </h1>
+    <p class="mx-auto mt-4 max-w-md text-brand-100/90">
+      Pizzas maison, burgers façon bouchère, kebabs, tacos et quesadillas.
+      Sur place ou à emporter.
+    </p>
+
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a
+        href={`tel:${business.phoneHref}`}
+        class="rounded-full bg-ember-700 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-ember-600"
+      >
+        📞 Appeler {business.phoneDisplay}
+      </a>
+      <a
+        href={business.mapsHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-full border border-brand-300/50 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+      >
+        📍 Itinéraire
+      </a>
+      <a
+        href="#menu"
+        class="rounded-full border border-brand-300/50 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+      >
+        Voir le menu
+      </a>
+    </div>
+
+    <AiTeaserEasterEgg />
+  </header>
+
+  <main id="menu" class="mx-auto max-w-3xl px-4 py-12 sm:py-16">
+    <h2 class="font-display text-3xl font-bold text-ink-900">Notre carte</h2>
+
+    <nav aria-label="Catégories du menu" class="mt-4 flex flex-wrap gap-2 text-sm">
+      {
+        categories.map((category) => (
+          <a
+            href={`#${category.id}`}
+            class="rounded-full bg-brand-50 px-3 py-1.5 font-medium text-brand-700 hover:bg-brand-100"
+          >
+            {category.data.title}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="mt-10 space-y-12">
+      {categories.map((category) => <MenuCategory category={category.data} slug={category.id} />)}
+    </div>
+  </main>
+
+  <section class="bg-brand-50 px-4 py-12 sm:py-16" aria-labelledby="infos-title">
+    <div class="mx-auto max-w-3xl">
+      <h2 id="infos-title" class="font-display text-3xl font-bold text-ink-900">Infos pratiques</h2>
+
+      <div class="mt-6 grid gap-8 sm:grid-cols-2">
+        <div>
+          <h3 class="font-semibold text-brand-700">Horaires</h3>
+          <dl class="mt-2 space-y-1 text-sm text-ink-800">
+            {
+              openingHours.map((slot) => (
+                <div class="flex justify-between gap-4">
+                  <dt class="font-medium">{slot.days}</dt>
+                  <dd>{slot.ranges}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-brand-700">Nous trouver</h3>
+          <address class="mt-2 not-italic text-sm text-ink-800">
+            {business.streetAddress}<br />
+            {business.postalCode} {business.city}
+          </address>
+          <p class="mt-2 text-sm text-ink-800">
+            <a href={`tel:${business.phoneHref}`} class="font-medium text-brand-700 underline">
+              {business.phoneDisplay}
+            </a>
+          </p>
+          <p class="mt-2 text-sm font-medium text-brand-700">Sur place ou à emporter</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-ink-900 px-4 py-8 text-center text-sm text-brand-100/70">
+    <p>en-cas 2 faim · {business.streetAddress}, {business.postalCode} {business.city} · {business.phoneDisplay}</p>
+  </footer>
+</BaseLayout>

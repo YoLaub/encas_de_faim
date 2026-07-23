@@ -1,0 +1,56 @@
+order: 4
+title: "Nos kebabs"
+note: "+1,50€ avec boisson · +1,50€ supplément viande"
+items:
+  - name: "Kebab veau/dinde"
+    description: "Viande kebab, oignon, tomate, salade, sauce, dans un pain ou une galette"
+    prices:
+      - label: "sans frites"
+        amount: 7.5
+      - label: "avec frites"
+        amount: 8.5
+  - name: "Assiette kebab/frites"
+    prices:
+      - amount: 12.0
+  - name: "Assiette chicken/frites"
+    prices:
+      - amount: 13.0
+  - name: "Sandwich steak"
+    prices:
+      - label: "sans frites"
+        amount: 8.5
+      - label: "avec frites"
+        amount: 9.5
+  - name: "Chicken sandwich"
+    description: "Morceaux de poulet mariné, tomate, salade, oignon, sauce"
+    prices:
+      - label: "sans frites"
+        amount: 8.5
+      - label: "avec frites"
+        amount: 9.5
+  - name: "Chicken wings"
+    prices:
+      - label: "6 pcs sans frites"
+        amount: 8.0
+      - label: "6 pcs avec frites"
+        amount: 9.0
+      - label: "9 pcs sans frites"
+        amount: 10.0
+      - label: "9 pcs avec frites"
+        amount: 11.0
+  - name: "Nuggets"
+    prices:
+      - label: "6 pcs sans frites"
+        amount: 7.0
+      - label: "6 pcs avec frites"
+        amount: 8.0
+      - label: "9 pcs sans frites"
+        amount: 9.0
+      - label: "9 pcs avec frites"
+        amount: 10.0
+  - name: "Petite frite"
+    prices:
+      - amount: 3.5
+  - name: "Grande frite"
+    prices:
+      - amount: 4.5

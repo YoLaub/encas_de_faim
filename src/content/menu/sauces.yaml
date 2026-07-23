@@ -1,0 +1,9 @@
+order: 8
+title: "Nos sauces"
+note: "Au choix : blanche maison, mayonnaise, burger, samouraï, algérienne, harissa, curry, biggy, ketchup, BBQ, andalouse"
+extras:
+  - label: "Supplément sauce"
+    amount: 0.5
+items:
+  - name: "Sauce au choix"
+    description: "Blanche maison, mayonnaise, burger, samouraï, algérienne, harissa, curry, biggy, ketchup, BBQ, andalouse"

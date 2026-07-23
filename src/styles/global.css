@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Brand green — leaf-green scale, tuned so 600/700 pass WCAG AA (4.5:1) on white
+     and on --color-ink, since the source logo's vivid green fails contrast on its own. */
+  --color-brand-50: #f1faf1;
+  --color-brand-100: #dcf2dd;
+  --color-brand-200: #b6e4b9;
+  --color-brand-300: #86cf8c;
+  --color-brand-400: #55b35d;
+  --color-brand-500: #359640;
+  --color-brand-600: #237830;
+  --color-brand-700: #1c5f28;
+  --color-brand-800: #194c23;
+  --color-brand-900: #153f1f;
+
+  /* Warm accent for appetite-driving CTAs (call, order). */
+  --color-ember-50: #fff4ed;
+  --color-ember-400: #f97a3d;
+  --color-ember-500: #ef5d1c;
+  --color-ember-600: #d84512;
+  --color-ember-700: #b23610;
+
+  /* Near-black, matches existing brand's dark sections. */
+  --color-ink-900: #14120f;
+  --color-ink-800: #211d17;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}

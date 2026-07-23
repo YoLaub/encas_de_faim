@@ -1,0 +1,89 @@
+---
+// Purely decorative teaser: no network calls, no AI actually wired up.
+// Tap the mascot 5 times (mobile-first: tap, not a keyboard konami code) to reveal it.
+---
+
+<div class="mt-6 flex flex-col items-center gap-3 text-center">
+  <p class="max-w-xs text-sm text-brand-100/90">
+    🤖 Psst&nbsp;… on planche sur une commande assistée par IA. Envie d'un indice&nbsp;?
+    Touchez la toque <strong class="text-white">5&nbsp;fois</strong>.
+  </p>
+  <button
+    type="button"
+    id="mascot-trigger"
+    aria-label="Toque du chef en-cas 2 faim, à toucher plusieurs fois pour un indice"
+    class="text-6xl transition-transform active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300 rounded-full"
+  >
+    👨‍🍳
+  </button>
+</div>
+
+<div
+  id="mascot-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-ink-900/80 p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="mascot-modal-title"
+  data-testid="ai-teaser-easter-egg"
+>
+  <div class="max-w-sm rounded-2xl bg-white p-6 text-center text-ink-900 shadow-xl">
+    <p class="text-4xl">🍟🤖🍕</p>
+    <h2 id="mascot-modal-title" class="mt-3 font-display text-xl font-semibold text-brand-700">
+      L'IA prépare vos frites...
+    </h2>
+    <p class="mt-2 text-sm text-ink-800/80">
+      Bientôt disponible : commandez en discutant avec notre assistant. En attendant,
+      c'est encore un humain (et une friteuse) qui s'occupe de vous — appelez-nous&nbsp;!
+    </p>
+    <button
+      type="button"
+      id="mascot-modal-close"
+      class="mt-5 rounded-full bg-brand-600 px-5 py-2 text-sm font-medium text-white hover:bg-brand-700"
+    >
+      Miam, d'accord
+    </button>
+  </div>
+</div>
+
+<script>
+  const trigger = document.getElementById('mascot-trigger');
+  const modal = document.getElementById('mascot-modal');
+  const closeBtn = document.getElementById('mascot-modal-close');
+
+  if (trigger && modal && closeBtn) {
+    let tapCount = 0;
+    let lastTap = 0;
+    const TAP_WINDOW_MS = 1200;
+    const TAPS_NEEDED = 5;
+
+    const openModal = () => {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      closeBtn.focus();
+    };
+
+    const closeModal = () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      trigger.focus();
+    };
+
+    trigger.addEventListener('click', () => {
+      const now = Date.now();
+      tapCount = now - lastTap > TAP_WINDOW_MS ? 1 : tapCount + 1;
+      lastTap = now;
+      if (tapCount >= TAPS_NEEDED) {
+        tapCount = 0;
+        openModal();
+      }
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+    });
+  }
+</script>

@@ -1,0 +1,75 @@
+order: 3
+title: "Nos burgers"
+note: "Steak façon bouchère · +1,50€ avec boisson"
+items:
+  - name: "Cheese burger"
+    description: "Steak haché, oignon, tomate, salade, cheddar, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 8.0
+      - label: "avec frites"
+        amount: 9.0
+  - name: "Bacon burger"
+    description: "Le cheese burger avec du bacon"
+    prices:
+      - label: "sans frites"
+        amount: 8.5
+      - label: "avec frites"
+        amount: 9.5
+  - name: "Bleu burger"
+    description: "Le cheese burger avec du bleu"
+    prices:
+      - label: "sans frites"
+        amount: 8.5
+      - label: "avec frites"
+        amount: 9.5
+  - name: "Chicken burger"
+    description: "Filet de poulet, oignon, tomate, salade, cheddar, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 8.0
+      - label: "avec frites"
+        amount: 9.0
+  - name: "Le savoyard"
+    description: "Steak haché, reblochon, galette de pomme de terre, salade, oignon, tomate, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 10.0
+      - label: "avec frites"
+        amount: 11.0
+  - name: "Le chevrotin"
+    description: "Steak haché, chèvre, miel, salade, oignon, tomate, sauce au choix"
+    prices:
+      - label: "sans frites"
+        amount: 9.5
+      - label: "avec frites"
+        amount: 10.5
+  - name: "La raclette"
+    description: "Steak haché, galette de pomme de terre, lardons, fromage à raclette, salade, tomate, oignon"
+    prices:
+      - label: "sans frites"
+        amount: 12.5
+      - label: "avec frites"
+        amount: 13.5
+  - name: "Le big burger"
+    description: "Steak haché, salade, tomate, oignon, cheddar, bacon, œuf"
+    prices:
+      - label: "sans frites"
+        amount: 10.5
+      - label: "avec frites"
+        amount: 11.5
+  - name: "Le végétarien"
+    description: "Galette de pomme de terre, oignon, cheddar, salade, tomate, sauce au choix"
+    tags: ["végétarien"]
+    prices:
+      - label: "sans frites"
+        amount: 8.0
+      - label: "avec frites"
+        amount: 9.0
+  - name: "Le double cheese burger"
+    description: "Le cheese burger avec 2 steaks hachés et 2 tranches de cheddar"
+    prices:
+      - label: "sans frites"
+        amount: 11.5
+      - label: "avec frites"
+        amount: 12.5

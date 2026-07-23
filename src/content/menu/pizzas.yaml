@@ -1,0 +1,132 @@
+order: 1
+title: "Nos pizzas"
+note: "Toutes nos pizzas sont faites maison"
+extras:
+  - label: "Ingrédient supplémentaire (29 cm)"
+    amount: 1.5
+  - label: "Ingrédient supplémentaire (33 cm)"
+    amount: 2.0
+items:
+  - name: "Marguerita"
+    description: "Tomate, fromage"
+    prices:
+      - label: "29 cm"
+        amount: 8.0
+      - label: "33 cm"
+        amount: 9.0
+  - name: "Royale"
+    description: "Tomate, fromage, jambon, champignons, œuf"
+    prices:
+      - label: "29 cm"
+        amount: 10.0
+      - label: "33 cm"
+        amount: 12.0
+  - name: "Végétarienne"
+    description: "Tomate, fromage, poivron, pomme de terre, champignons, oignon"
+    prices:
+      - label: "29 cm"
+        amount: 10.0
+      - label: "33 cm"
+        amount: 12.0
+  - name: "Savoyarde"
+    description: "Tomate, reblochon, pomme de terre, oignon, lardons"
+    prices:
+      - label: "29 cm"
+        amount: 11.5
+      - label: "33 cm"
+        amount: 13.5
+  - name: "Flamenkuche"
+    description: "Crème, fromage, lardon, oignon"
+    prices:
+      - label: "29 cm"
+        amount: 10.0
+      - label: "33 cm"
+        amount: 12.0
+  - name: "Boisée"
+    description: "Crème, fromage, poivron, poulet"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "Marrakech"
+    description: "Tomate, oignon, viande kebab, merguez, sauce blanche"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "4 fromages"
+    description: "Tomate, mozzarella, bleu, emmental, chèvre"
+    prices:
+      - label: "29 cm"
+        amount: 11.5
+      - label: "33 cm"
+        amount: 13.5
+  - name: "Bolognaise"
+    description: "Tomate, fromage, bœuf haché, oignon, tomate fraîche"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "Indienne"
+    description: "Tomate, fromage, pomme de terre, oignon, poulet, curry"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "Del sol"
+    description: "Tomate, fromage, merguez, chorizo, poivron, pesto"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "L'originale"
+    description: "Tomate, fromage, jambon cru, chèvre, miel, noix"
+    prices:
+      - label: "29 cm"
+        amount: 11.5
+      - label: "33 cm"
+        amount: 13.5
+  - name: "50/50"
+    description: "Pizza divisée en 2 à votre choix"
+    prices:
+      - label: "29 cm"
+        amount: 13.0
+      - label: "33 cm"
+        amount: 15.0
+  - name: "Italienne"
+    description: "Tomate, fromage, jambon cru, pesto"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0
+  - name: "Bretonne"
+    description: "Tomate, fromage, andouille, oignon, pomme de terre, crème"
+    prices:
+      - label: "29 cm"
+        amount: 11.5
+      - label: "33 cm"
+        amount: 13.5
+  - name: "Calzone"
+    description: "Tomate, fromage, jambon, champignons, œuf"
+    prices:
+      - amount: 11.0
+  - name: "En cas"
+    description: "Crème, noix de st-jacques, poireau, saumon fumé, aneth, citron"
+    prices:
+      - label: "29 cm"
+        amount: 12.0
+      - label: "33 cm"
+        amount: 14.0
+  - name: "Norvégienne"
+    description: "Crème, saumon fumé, fromage tartare, citron"
+    prices:
+      - label: "29 cm"
+        amount: 11.0
+      - label: "33 cm"
+        amount: 13.0

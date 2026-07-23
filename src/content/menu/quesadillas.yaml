@@ -1,0 +1,8 @@
+order: 5
+title: "Nos quesadillas"
+note: "Servies avec frites ou salade"
+items:
+  - name: "Quesadilla"
+    description: "Assemblage de 2 tortillas cuites au four, avec au milieu une base de tomate ou crème, fromage, + la garniture de votre choix : poulet/oignon/poivron · saumon fumé/fromage tartare/crème · bœuf haché/oignon/poivron · viande kebab/oignon/sauce blanche"
+    prices:
+      - amount: 12.0
