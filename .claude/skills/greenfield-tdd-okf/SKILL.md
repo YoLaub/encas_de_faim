@@ -1,6 +1,6 @@
 ---
 name: greenfield-tdd-okf
-description: Workflow répétable pour construire un produit greenfield en TDD avec index OKF — recherche de l'existant, cadrage par questions, plan validé, bootstrap monorepo git-flow, features en branches avec tests verts + E2E avant merge, index OKF par feature, rétro continue. Utiliser au démarrage d'un nouveau projet applicatif ou d'un gros module.
+description: Workflow répétable pour construire un produit greenfield en TDD avec index OKF — recherche de l'existant, cadrage par questions, plan validé, bootstrap monorepo git-flow, features en branches avec tests verts + E2E avant merge, index OKF par feature, rétro continue. Utiliser au démarrage d'un nouveau projet applicatif ou d'un gros module. Ne pas confondre avec vitrine-locale (site vitrine one-page pour un commerce local en Astro) : ici produit applicatif générique, potentiellement multi-pages avec logique métier.
 ---
 
 # Greenfield TDD + OKF
