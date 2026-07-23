@@ -1,20 +1,26 @@
 ---
+import ChefHat from './icons/ChefHat.astro';
+import Sparkles from './icons/Sparkles.astro';
+
 // Purely decorative teaser: no network calls, no AI actually wired up.
 // Tap the mascot 5 times (mobile-first: tap, not a keyboard konami code) to reveal it.
 ---
 
 <div class="mt-6 flex flex-col items-center gap-3 text-center">
-  <p class="max-w-xs text-sm text-brand-100/90">
-    🤖 Psst&nbsp;… on planche sur une commande assistée par IA. Envie d'un indice&nbsp;?
-    Touchez la toque <strong class="text-white">5&nbsp;fois</strong>.
+  <p class="inline-flex max-w-xs items-start gap-1.5 text-sm text-brand-100/90">
+    <Sparkles class="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
+    <span>
+      Psst&nbsp;… on planche sur une commande assistée par IA. Envie d'un indice&nbsp;?
+      Touchez la toque <strong class="text-white">5&nbsp;fois</strong>.
+    </span>
   </p>
   <button
     type="button"
     id="mascot-trigger"
     aria-label="Toque du chef en-cas 2 faim, à toucher plusieurs fois pour un indice"
-    class="text-6xl transition-transform active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300 rounded-full"
+    class="rounded-full p-3 text-brand-200 transition-transform active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
   >
-    👨‍🍳
+    <ChefHat class="h-12 w-12" />
   </button>
 </div>
 
@@ -27,7 +33,7 @@
   data-testid="ai-teaser-easter-egg"
 >
   <div class="max-w-sm rounded-2xl bg-white p-6 text-center text-ink-900 shadow-xl">
-    <p class="text-4xl">🍟🤖🍕</p>
+    <Sparkles class="mx-auto h-8 w-8 text-brand-500" />
     <h2 id="mascot-modal-title" class="mt-3 font-display text-xl font-semibold text-brand-700">
       L'IA prépare vos frites...
     </h2>

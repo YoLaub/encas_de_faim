@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MenuCategory from '../components/MenuCategory.astro';
 import AiTeaserEasterEgg from '../components/AiTeaserEasterEgg.astro';
+import Phone from '../components/icons/Phone.astro';
+import MapPin from '../components/icons/MapPin.astro';
 import { business, openingHours } from '../lib/business';
 
 const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
@@ -32,17 +34,17 @@ const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b
     <div class="mt-8 flex flex-wrap justify-center gap-3">
       <a
         href={`tel:${business.phoneHref}`}
-        class="rounded-full bg-ember-700 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-ember-600"
+        class="inline-flex items-center gap-2 rounded-full bg-ember-700 px-6 py-3 text-sm font-semibold text-white shadow-lg hover:bg-ember-600"
       >
-        📞 Appeler {business.phoneDisplay}
+        <Phone class="h-4 w-4" /> Appeler {business.phoneDisplay}
       </a>
       <a
         href={business.mapsHref}
         target="_blank"
         rel="noopener noreferrer"
-        class="rounded-full border border-brand-300/50 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+        class="inline-flex items-center gap-2 rounded-full border border-brand-300/50 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
       >
-        📍 Itinéraire
+        <MapPin class="h-4 w-4" /> Itinéraire
       </a>
       <a
         href="#menu"

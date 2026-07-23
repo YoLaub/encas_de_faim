@@ -67,6 +67,8 @@ téléphone, des horaires, du menu, des balises SEO).
 - **UX "appétissant"** : hiérarchie visuelle forte sur le menu (catégories, prix
   lisibles), photos de qualité mises en valeur, CTA clairs (appeler, itinéraire,
   commander si applicable), ambiance chaleureuse plutôt que froide/corporate.
+- **Jamais d'emoji dans l'UI** (ça fait "généré par IA") : toujours des icônes SVG
+  dessinées (`src/components/icons/`), `currentColor`, `aria-hidden="true"`.
 - **DRY / SOLID**
 - **Ne jamais supprimer** fichier/contenu sans accord explicite. Proposer, attendre
   validation.
