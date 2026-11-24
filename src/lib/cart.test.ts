@@ -7,6 +7,7 @@ import {
   changeQuantity,
   clearCart,
   emptyCart,
+  extraCents,
   lineId,
   loadCart,
   saveCart,
@@ -372,5 +373,20 @@ describe('persistence', () => {
     const storage = memoryStorage();
     saveCart(storage, addItem(emptyCart(), margherita29, catalog));
     expect(storage.data[STORAGE_KEY]).not.toMatch(/800|8,00|8\.0/);
+  });
+});
+
+describe('extraCents', () => {
+  it('returns the price of an extra for the size of the line', () => {
+    const small = { itemKey: 'pizzas/marguerita', variant: '29 cm', extras: [], quantity: 1 };
+    const large = { ...small, variant: '33 cm' };
+    expect(extraCents(small, 'Ingrédient supplémentaire', catalog)).toBe(150);
+    expect(extraCents(large, 'Ingrédient supplémentaire', catalog)).toBe(200);
+  });
+
+  it('returns 0 for an unknown extra or item', () => {
+    const line = { itemKey: 'pizzas/marguerita', variant: '29 cm', extras: [], quantity: 1 };
+    expect(extraCents(line, 'Inconnu', catalog)).toBe(0);
+    expect(extraCents({ ...line, itemKey: 'nope/nope' }, 'Ingrédient supplémentaire', catalog)).toBe(0);
   });
 });

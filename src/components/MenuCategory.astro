@@ -54,7 +54,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
                   </span>
                 ))}
               </p>
-              {item.description && <p class="text-sm text-ink-600">{item.description}</p>}
+              {item.description && <p class="text-base text-ink-600">{item.description}</p>}
               {key && extraGroups.length > 0 && (
                 <details class="mt-1 text-sm" data-extras>
                   <summary class="inline-flex min-h-11 cursor-pointer items-center font-bold text-brand-700 underline underline-offset-4">
@@ -82,11 +82,11 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
                     data-item-key={key}
                     data-variant={price.label}
                     aria-label={`Ajouter ${item.name}${price.label ? `, ${price.label}` : ''}, ${formatPrice(price.amount)}`}
-                    class="brut-btn inline-flex min-h-11 items-center gap-2 bg-cream px-3 text-sm text-ink-900 hover:bg-leaf"
+                    class="brut-btn inline-flex min-h-11 items-center gap-1.5 border-2 bg-cream px-2.5 text-xs text-ink-900 shadow-none hover:bg-leaf"
                   >
                     {price.label && <span class="font-medium text-ink-600">{price.label}</span>}
-                    <span class="font-black">{formatPrice(price.amount)}</span>
-                    <Plus class="h-4 w-4" />
+                    <span class="font-bold">{formatPrice(price.amount)}</span>
+                    <Plus class="h-3.5 w-3.5" />
                   </button>
                 ))}
               </div>

@@ -107,6 +107,7 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
     cartTotalCents,
     changeQuantity,
     clearCart,
+    extraCents,
     lineId,
     loadCart,
     saveCart,
@@ -184,11 +185,11 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
         name.className = 'font-bold';
         name.textContent = describe(line);
         text.append(name);
-        if (line.extras.length > 0) {
-          const extras = document.createElement('p');
-          extras.className = 'text-sm text-ink-600';
-          extras.textContent = `+ ${line.extras.join(', ')}`;
-          text.append(extras);
+        for (const label of line.extras) {
+          const extra = document.createElement('p');
+          extra.className = 'text-sm font-bold text-ink-900';
+          extra.textContent = `+ ${label} (${formatPrice(extraCents(line, label, catalog) / 100)})`;
+          text.append(extra);
         }
         const price = document.createElement('p');
         price.className = 'text-sm font-black text-ink-900';
