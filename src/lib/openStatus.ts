@@ -9,6 +9,8 @@ type Spec = {
 export type OpenStatus = {
   isOpen: boolean;
   label: string;
+  /** Only when closed, e.g. "demain à 11h30". */
+  nextOpening?: string;
 };
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -66,10 +68,8 @@ export function getOpenStatus(now: Date, specs: Spec[] = openingHoursSpecificati
       (range) => offset > 0 || toMinutes(range.opens) > minutesNow,
     );
     if (next) {
-      return {
-        isOpen: false,
-        label: `Fermé, rouvre ${dayLabel(offset, dayIndex)} à ${formatTime(next.opens)}`,
-      };
+      const nextOpening = `${dayLabel(offset, dayIndex)} à ${formatTime(next.opens)}`;
+      return { isOpen: false, label: `Fermé, rouvre ${nextOpening}`, nextOpening };
     }
   }
 
