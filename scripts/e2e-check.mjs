@@ -18,6 +18,8 @@ const checks = [
   ['teaser IA', 'commande assistée par IA'],
   ['easter egg trigger', 'ai-teaser-easter-egg'],
   ['badge statut ouvert/fermé', 'data-testid="open-status"'],
+  ['note Google', '4,2 sur 5 · 210 avis Google'],
+  ['lien fiche Google', 'data-testid="google-reviews"'],
 ];
 
 console.log('→ astro build');

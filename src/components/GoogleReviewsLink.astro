@@ -1,0 +1,16 @@
+---
+import Star from './icons/Star.astro';
+import { formatRatingLabel, googleReviews } from '../lib/reviews';
+---
+
+<a
+  href={googleReviews.href}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-testid="google-reviews"
+  class="mx-auto mt-3 inline-flex min-h-11 items-center gap-2 rounded-full px-3 py-2 text-sm text-brand-100/90 underline-offset-4 hover:underline"
+>
+  <Star class="h-4 w-4 text-brand-300" />
+  <span>{formatRatingLabel(googleReviews)}</span>
+  <span class="sr-only">(s'ouvre dans un nouvel onglet)</span>
+</a>
