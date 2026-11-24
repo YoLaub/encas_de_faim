@@ -1,6 +1,12 @@
 order: 4
 title: "Nos kebabs"
-note: "+1,50€ avec boisson · +1,50€ supplément viande"
+extras:
+  - label: "Avec boisson"
+    amount: 1.5
+  - label: "Supplément viande"
+    amount: 1.5
+  - label: "Supplément sauce"
+    amount: 0.5
 items:
   - name: "Kebab veau/dinde"
     description: "Viande kebab, oignon, tomate, salade, sauce, dans un pain ou une galette"

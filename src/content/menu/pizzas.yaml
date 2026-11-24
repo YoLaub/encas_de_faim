@@ -2,10 +2,12 @@ order: 1
 title: "Nos pizzas"
 note: "Toutes nos pizzas sont faites maison"
 extras:
-  - label: "Ingrédient supplémentaire (29 cm)"
+  - label: "Ingrédient supplémentaire"
     amount: 1.5
-  - label: "Ingrédient supplémentaire (33 cm)"
+    appliesTo: "29 cm"
+  - label: "Ingrédient supplémentaire"
     amount: 2.0
+    appliesTo: "33 cm"
 items:
   - name: "Marguerita"
     description: "Tomate, fromage"
