@@ -47,7 +47,7 @@ const { category, slug } = Astro.props;
   {
     category.extras && category.extras.length > 0 && (
       <p class="mt-3 text-xs text-ink-800/60">
-        {category.extras.map((extra) => `${extra.label} : ${formatPrice(extra.amount)}`).join(' · ')}
+        {category.extras.map((extra) => `${extra.label}${extra.appliesTo ? ` (${extra.appliesTo})` : ''} : ${formatPrice(extra.amount)}`).join(' · ')}
       </p>
     )
   }
