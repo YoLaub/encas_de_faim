@@ -45,7 +45,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
         const key = keyByIndex.get(index);
         return (
           <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-            <div class="sm:max-w-md">
+            <div class="min-w-0 sm:flex-1">
               <p class="font-bold text-ink-900">
                 {item.name}
                 {item.tags?.map((tag) => (
@@ -74,7 +74,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
               )}
             </div>
             {item.prices && item.prices.length > 0 && key && (
-              <div class="flex shrink-0 flex-wrap gap-2 sm:justify-end">
+              <div class="flex flex-wrap gap-2 sm:max-w-[45%] sm:justify-end">
                 {item.prices.map((price) => (
                   <button
                     type="button"
@@ -92,7 +92,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
               </div>
             )}
             {item.prices && item.prices.length > 0 && !key && (
-              <div class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm font-black text-ink-900 sm:justify-end">
+              <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm font-black text-ink-900 sm:max-w-[45%] sm:justify-end">
                 {item.prices.map((price) => (
                   <span>
                     {price.label && <span class="mr-1 font-medium text-ink-600">{price.label}</span>}
