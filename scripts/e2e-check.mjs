@@ -17,6 +17,7 @@ const checks = [
   ['catégorie boissons', 'Nos boissons'],
   ['teaser IA', 'commande assistée par IA'],
   ['easter egg trigger', 'ai-teaser-easter-egg'],
+  ['badge statut ouvert/fermé', 'data-testid="open-status"'],
 ];
 
 console.log('→ astro build');

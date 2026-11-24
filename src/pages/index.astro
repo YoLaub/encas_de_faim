@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MenuCategory from '../components/MenuCategory.astro';
 import AiTeaserEasterEgg from '../components/AiTeaserEasterEgg.astro';
+import OpenStatusBadge from '../components/OpenStatusBadge.astro';
 import Phone from '../components/icons/Phone.astro';
 import MapPin from '../components/icons/MapPin.astro';
 import { business, openingHours } from '../lib/business';
@@ -53,6 +54,8 @@ const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b
         Voir le menu
       </a>
     </div>
+
+    <OpenStatusBadge />
 
     <AiTeaserEasterEgg />
   </header>
