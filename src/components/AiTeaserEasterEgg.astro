@@ -7,18 +7,18 @@ import Sparkles from './icons/Sparkles.astro';
 ---
 
 <div class="mt-6 flex flex-col items-center gap-3 text-center">
-  <p class="inline-flex max-w-xs items-start gap-1.5 text-sm text-brand-100/90">
-    <Sparkles class="mt-0.5 h-4 w-4 shrink-0 text-brand-300" />
+  <p class="inline-flex max-w-xs items-start gap-1.5 text-sm font-medium text-ink-900">
+    <Sparkles class="mt-0.5 h-4 w-4 shrink-0 text-ink-900" />
     <span>
       Psst&nbsp;… on planche sur une commande assistée par IA. Envie d'un indice&nbsp;?
-      Touchez la toque <strong class="text-white">5&nbsp;fois</strong>.
+      Touchez la toque <strong>5&nbsp;fois</strong>.
     </span>
   </p>
   <button
     type="button"
     id="mascot-trigger"
     aria-label="Toque du chef en-cas 2 faim, à toucher plusieurs fois pour un indice"
-    class="rounded-full p-3 text-brand-200 transition-transform active:scale-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-300"
+    class="rounded-full p-3 text-ink-900 transition-transform active:scale-90"
   >
     <ChefHat class="h-12 w-12" />
   </button>
@@ -32,19 +32,19 @@ import Sparkles from './icons/Sparkles.astro';
   aria-labelledby="mascot-modal-title"
   data-testid="ai-teaser-easter-egg"
 >
-  <div class="max-w-sm rounded-2xl bg-white p-6 text-center text-ink-900 shadow-xl">
-    <Sparkles class="mx-auto h-8 w-8 text-brand-500" />
-    <h2 id="mascot-modal-title" class="mt-3 font-display text-xl font-semibold text-brand-700">
+  <div class="brut-card max-w-sm bg-white p-6 text-center text-ink-900">
+    <Sparkles class="mx-auto h-8 w-8 text-ink-900" />
+    <h2 id="mascot-modal-title" class="mt-3 font-display text-xl font-black text-ink-900">
       L'IA prépare vos frites...
     </h2>
-    <p class="mt-2 text-sm text-ink-800/80">
+    <p class="mt-2 text-sm text-ink-600">
       Bientôt disponible : commandez en discutant avec notre assistant. En attendant,
       c'est encore un humain (et une friteuse) qui s'occupe de vous. Appelez-nous&nbsp;!
     </p>
     <button
       type="button"
       id="mascot-modal-close"
-      class="mt-5 rounded-full bg-brand-600 px-5 py-2 text-sm font-medium text-white hover:bg-brand-700"
+      class="brut-btn mt-5 min-h-11 bg-leaf px-5 text-sm text-ink-900 hover:bg-white"
     >
       Miam, d'accord
     </button>

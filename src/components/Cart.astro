@@ -20,18 +20,18 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
 <div
   data-cart-bar
   hidden
-  class="fixed inset-x-0 bottom-0 z-40 border-t-2 border-ink-900 bg-white px-4 py-3 shadow-[0_-6px_20px_rgba(20,18,15,0.18)]"
+  class="fixed inset-x-0 bottom-0 z-40 border-t-[3px] border-ink-900 bg-cream px-4 py-3"
 >
   <div class="mx-auto flex max-w-3xl items-center justify-between gap-3">
     <p class="text-sm leading-tight">
       <span class="font-semibold text-ink-900">Ma sélection</span>
-      <span data-cart-summary class="block text-ink-800"></span>
+      <span data-cart-summary class="block text-ink-600"></span>
     </p>
     <button
       type="button"
       data-cart-open
       aria-haspopup="dialog"
-      class="min-h-11 rounded-full bg-ember-700 px-5 text-sm font-semibold text-white hover:bg-ember-600"
+      class="brut-btn min-h-11 bg-ember-700 px-5 text-sm text-white"
     >
       Voir ma sélection
     </button>
@@ -41,33 +41,33 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
 <dialog
   data-cart-dialog
   aria-labelledby="cart-title"
-  class="mx-auto mt-auto mb-0 max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl border-2 border-ink-900 bg-white p-5 text-ink-900 backdrop:bg-black/60 sm:my-auto sm:rounded-2xl"
+  class="mx-auto mt-auto mb-0 max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-b-none rounded-t-xl border-[3px] border-ink-900 bg-white p-5 text-ink-900 backdrop:bg-black/60 sm:my-auto sm:rounded-xl sm:shadow-brut"
 >
   <div class="flex items-center justify-between gap-4">
-    <h2 id="cart-title" class="font-display text-2xl font-bold">Ma sélection</h2>
+    <h2 id="cart-title" class="font-display text-2xl font-black">Ma sélection</h2>
     <button
       type="button"
       data-cart-close
       aria-label="Fermer ma sélection"
-      class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-900/30 hover:bg-brand-50"
+      class="brut-btn inline-flex h-11 w-11 items-center justify-center bg-cream hover:bg-leaf"
     >
       <Close class="h-5 w-5" />
     </button>
   </div>
 
-  <ul data-cart-lines class="mt-4 divide-y divide-brand-100"></ul>
+  <ul data-cart-lines class="mt-4 divide-y-2 divide-ink-900/15"></ul>
 
   <p data-cart-total aria-live="polite" class="mt-4 text-lg font-semibold"></p>
-  <p class="mt-1 text-sm text-ink-800">
+  <p class="mt-1 text-sm text-ink-600">
     Rien n'est envoyé en ligne. Cette sélection sert à préparer votre appel, les prix sont indicatifs.
   </p>
 
-  <p data-cart-closed hidden class="mt-4 rounded-lg bg-ember-50 p-3 text-sm font-medium text-ember-700"></p>
+  <p data-cart-closed hidden class="mt-4 rounded-lg border-2 border-ink-900 bg-ember-50 p-3 text-sm font-bold text-ember-700"></p>
 
   <a
     data-cart-call
     href={`tel:${business.phoneHref}`}
-    class="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-ember-700 px-6 text-base font-semibold text-white hover:bg-ember-600"
+    class="brut-btn mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 bg-ember-700 px-6 text-base text-white"
   >
     <Phone class="h-5 w-5" />
     <span data-cart-call-label>Appeler {business.phoneDisplay}</span>
@@ -78,14 +78,14 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
       type="button"
       data-cart-copy
       hidden
-      class="min-h-11 rounded-full border border-ink-900/40 px-4 text-sm font-medium hover:bg-brand-50"
+      class="brut-btn min-h-11 bg-cream px-4 text-sm hover:bg-white"
     >
       Copier le récapitulatif
     </button>
     <button
       type="button"
       data-cart-clear
-      class="min-h-11 rounded-full border border-ink-900/40 px-4 text-sm font-medium hover:bg-brand-50"
+      class="brut-btn min-h-11 bg-cream px-4 text-sm hover:bg-white"
     >
       Vider ma sélection
     </button>
@@ -98,13 +98,6 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
   /* Keeps the end of the page reachable above the fixed bar. */
   body.has-cart-bar {
     padding-bottom: 5.5rem;
-  }
-  [data-cart-bar]:focus-within,
-  dialog[data-cart-dialog] button:focus-visible,
-  dialog[data-cart-dialog] a:focus-visible,
-  [data-cart-bar] button:focus-visible {
-    outline: 3px solid #14120f;
-    outline-offset: 2px;
   }
 </style>
 
@@ -188,17 +181,17 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
 
         const text = document.createElement('div');
         const name = document.createElement('p');
-        name.className = 'font-medium';
+        name.className = 'font-bold';
         name.textContent = describe(line);
         text.append(name);
         if (line.extras.length > 0) {
           const extras = document.createElement('p');
-          extras.className = 'text-sm text-ink-800';
+          extras.className = 'text-sm text-ink-600';
           extras.textContent = `+ ${line.extras.join(', ')}`;
           text.append(extras);
         }
         const price = document.createElement('p');
-        price.className = 'text-sm font-semibold text-brand-700';
+        price.className = 'text-sm font-black text-ink-900';
         price.textContent = formatPrice(cartTotalCents({ lines: [line] }, catalog) / 100);
         text.append(price);
 
@@ -211,7 +204,7 @@ const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
           button.dataset.delta = String(delta);
           button.setAttribute('aria-label', `${label} ${describe(line)}`);
           button.className =
-            'inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-900/40 hover:bg-brand-50';
+            'brut-btn inline-flex h-11 w-11 items-center justify-center bg-cream hover:bg-leaf';
           button.innerHTML = svg;
           return button;
         };

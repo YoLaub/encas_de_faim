@@ -31,29 +31,33 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
 );
 ---
 
-<section id={slug} class="scroll-mt-24">
-  <h3 class="font-display text-2xl font-semibold text-brand-700">{category.title}</h3>
-  {category.note && <p class="mt-1 text-sm text-ink-800/70">{category.note}</p>}
+<section id={slug} class="brut-card scroll-mt-24 bg-white p-5">
+  <h3
+    class="inline-block -rotate-1 rounded-lg border-[3px] border-ink-900 bg-leaf px-3 py-1 font-display text-2xl font-black text-ink-900"
+  >
+    {category.title}
+  </h3>
+  {category.note && <p class="mt-3 text-sm text-ink-600">{category.note}</p>}
 
-  <ul class="mt-4 divide-y divide-brand-100">
+  <ul class="mt-4 divide-y-2 divide-ink-900/15">
     {
       category.items.map((item, index) => {
         const key = keyByIndex.get(index);
         return (
           <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
             <div class="sm:max-w-md">
-              <p class="font-medium text-ink-900">
+              <p class="font-bold text-ink-900">
                 {item.name}
                 {item.tags?.map((tag) => (
-                  <span class="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-normal text-brand-700">
+                  <span class="ml-2 rounded-md border-2 border-ink-900 bg-cream px-2 py-0.5 text-xs font-bold text-ink-900">
                     {tag}
                   </span>
                 ))}
               </p>
-              {item.description && <p class="text-sm text-ink-800/70">{item.description}</p>}
+              {item.description && <p class="text-sm text-ink-600">{item.description}</p>}
               {key && extraGroups.length > 0 && (
                 <details class="mt-1 text-sm" data-extras>
-                  <summary class="inline-flex min-h-11 cursor-pointer items-center text-brand-700 underline underline-offset-2">
+                  <summary class="inline-flex min-h-11 cursor-pointer items-center font-bold text-brand-700 underline underline-offset-4">
                     Un supplément&nbsp;?
                   </summary>
                   <div class="flex flex-col">
@@ -61,7 +65,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
                       <label class="flex min-h-11 items-center gap-3 text-ink-900">
                         <input type="checkbox" value={group.label} data-extra class="h-5 w-5 accent-brand-600" />
                         <span>
-                          {group.label} <span class="text-ink-800/70">{group.priceText}</span>
+                          {group.label} <span class="text-ink-600">{group.priceText}</span>
                         </span>
                       </label>
                     ))}
@@ -78,20 +82,20 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
                     data-item-key={key}
                     data-variant={price.label}
                     aria-label={`Ajouter ${item.name}${price.label ? `, ${price.label}` : ''}, ${formatPrice(price.amount)}`}
-                    class="inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-600 px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+                    class="brut-btn inline-flex min-h-11 items-center gap-2 bg-cream px-3 text-sm text-ink-900 hover:bg-leaf"
                   >
-                    {price.label && <span class="font-normal text-ink-800/70">{price.label}</span>}
-                    <span>{formatPrice(price.amount)}</span>
+                    {price.label && <span class="font-medium text-ink-600">{price.label}</span>}
+                    <span class="font-black">{formatPrice(price.amount)}</span>
                     <Plus class="h-4 w-4" />
                   </button>
                 ))}
               </div>
             )}
             {item.prices && item.prices.length > 0 && !key && (
-              <div class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-brand-700 sm:justify-end">
+              <div class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm font-black text-ink-900 sm:justify-end">
                 {item.prices.map((price) => (
                   <span>
-                    {price.label && <span class="mr-1 font-normal text-ink-800/60">{price.label}</span>}
+                    {price.label && <span class="mr-1 font-medium text-ink-600">{price.label}</span>}
                     {formatPrice(price.amount)}
                   </span>
                 ))}
@@ -105,7 +109,7 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
 
   {
     category.extras && category.extras.length > 0 && (
-      <p class="mt-3 text-xs text-ink-800/60">
+      <p class="mt-3 text-xs text-ink-600">
         {category.extras
           .map((extra) => `${extra.label}${extra.appliesTo ? ` (${extra.appliesTo})` : ''} : ${formatPrice(extra.amount)}`)
           .join(' · ')}
@@ -113,13 +117,3 @@ const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.labe
     )
   }
 </section>
-
-<style>
-  /* Visible keyboard focus on the add buttons and the extras summary. */
-  button[data-add]:focus-visible,
-  summary:focus-visible,
-  input[data-extra]:focus-visible {
-    outline: 3px solid #14120f;
-    outline-offset: 2px;
-  }
-</style>
