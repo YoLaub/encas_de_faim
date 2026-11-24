@@ -54,6 +54,15 @@ describe('getOpenStatus', () => {
     expect(getOpenStatus(winter(28, '22:45')).label).toBe('Fermé, rouvre demain à 18h');
   });
 
+  it('exposes the next opening when closed, for call-to-action wording', () => {
+    expect(getOpenStatus(winter(24, '15:00')).nextOpening).toBe("aujourd'hui à 18h");
+    expect(getOpenStatus(winter(29, '22:30')).nextOpening).toBe('demain à 11h30');
+  });
+
+  it('has no next opening while open', () => {
+    expect(getOpenStatus(winter(24, '12:00')).nextOpening).toBeUndefined();
+  });
+
   it('reads the Paris wall clock in summer time', () => {
     const status = getOpenStatus(summer(14, '12:00'));
     expect(status.isOpen).toBe(true);

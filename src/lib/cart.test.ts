@@ -86,6 +86,11 @@ describe('buildCatalog', () => {
     expect(Object.keys(catalog)).toContain('tacos/tacos-poulet');
   });
 
+  it('remembers the category id and the position of each item in its category', () => {
+    expect(catalog['pizzas/marguerita']).toMatchObject({ categoryId: 'pizzas', itemIndex: 0 });
+    expect(catalog['pizzas/calzone']).toMatchObject({ categoryId: 'pizzas', itemIndex: 2 });
+  });
+
   it('converts euros to whole cents without float drift', () => {
     const rounded = buildCatalog([
       {

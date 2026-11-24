@@ -33,11 +33,4 @@ export type Extra = z.infer<typeof extraSchema>;
 export type MenuItem = z.infer<typeof menuItemSchema>;
 export type MenuCategory = z.infer<typeof menuCategorySchema>;
 
-const priceFormatter = new Intl.NumberFormat('fr-FR', {
-  style: 'currency',
-  currency: 'EUR',
-});
-
-export function formatPrice(amount: number): string {
-  return priceFormatter.format(amount);
-}
+export { formatPrice } from './format';

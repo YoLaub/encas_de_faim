@@ -1,13 +1,34 @@
 ---
-import { formatPrice } from '../lib/menu.schema';
+import { formatPrice } from '../lib/format';
 import type { MenuCategory } from '../lib/menu.schema';
+import type { Catalog } from '../lib/cart';
+import Plus from './icons/Plus.astro';
 
 interface Props {
   category: MenuCategory;
   slug: string;
+  catalog: Catalog;
 }
 
-const { category, slug } = Astro.props;
+const { category, slug, catalog } = Astro.props;
+
+// Catalog key of each orderable item of this category, by position.
+const keyByIndex = new Map(
+  Object.values(catalog)
+    .filter((entry) => entry.categoryId === slug)
+    .map((entry) => [entry.itemIndex, entry.key]),
+);
+
+// One checkbox per extra label; the price may differ by size (pizzas).
+const extraGroups = [...Map.groupBy(category.extras ?? [], (extra) => extra.label)].map(
+  ([label, extras]) => {
+    const sameAmount = extras.every((extra) => extra.amount === extras[0].amount);
+    const priceText = sameAmount
+      ? formatPrice(extras[0].amount)
+      : extras.map((extra) => `${formatPrice(extra.amount)} (${extra.appliesTo})`).join(' · ');
+    return { label, priceText };
+  },
+);
 ---
 
 <section id={slug} class="scroll-mt-24">
@@ -16,39 +37,89 @@ const { category, slug } = Astro.props;
 
   <ul class="mt-4 divide-y divide-brand-100">
     {
-      category.items.map((item) => (
-        <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-          <div class="sm:max-w-md">
-            <p class="font-medium text-ink-900">
-              {item.name}
-              {item.tags?.map((tag) => (
-                <span class="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-normal text-brand-700">
-                  {tag}
-                </span>
-              ))}
-            </p>
-            {item.description && <p class="text-sm text-ink-800/70">{item.description}</p>}
-          </div>
-          {item.prices && item.prices.length > 0 && (
-            <div class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-brand-700 sm:justify-end">
-              {item.prices.map((price) => (
-                <span>
-                  {price.label && <span class="mr-1 font-normal text-ink-800/60">{price.label}</span>}
-                  {formatPrice(price.amount)}
-                </span>
-              ))}
+      category.items.map((item, index) => {
+        const key = keyByIndex.get(index);
+        return (
+          <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+            <div class="sm:max-w-md">
+              <p class="font-medium text-ink-900">
+                {item.name}
+                {item.tags?.map((tag) => (
+                  <span class="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs font-normal text-brand-700">
+                    {tag}
+                  </span>
+                ))}
+              </p>
+              {item.description && <p class="text-sm text-ink-800/70">{item.description}</p>}
+              {key && extraGroups.length > 0 && (
+                <details class="mt-1 text-sm" data-extras>
+                  <summary class="inline-flex min-h-11 cursor-pointer items-center text-brand-700 underline underline-offset-2">
+                    Un supplément&nbsp;?
+                  </summary>
+                  <div class="flex flex-col">
+                    {extraGroups.map((group) => (
+                      <label class="flex min-h-11 items-center gap-3 text-ink-900">
+                        <input type="checkbox" value={group.label} data-extra class="h-5 w-5 accent-brand-600" />
+                        <span>
+                          {group.label} <span class="text-ink-800/70">{group.priceText}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
-          )}
-        </li>
-      ))
+            {item.prices && item.prices.length > 0 && key && (
+              <div class="flex shrink-0 flex-wrap gap-2 sm:justify-end">
+                {item.prices.map((price) => (
+                  <button
+                    type="button"
+                    data-add
+                    data-item-key={key}
+                    data-variant={price.label}
+                    aria-label={`Ajouter ${item.name}${price.label ? `, ${price.label}` : ''}, ${formatPrice(price.amount)}`}
+                    class="inline-flex min-h-11 items-center gap-2 rounded-full border border-brand-600 px-3 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+                  >
+                    {price.label && <span class="font-normal text-ink-800/70">{price.label}</span>}
+                    <span>{formatPrice(price.amount)}</span>
+                    <Plus class="h-4 w-4" />
+                  </button>
+                ))}
+              </div>
+            )}
+            {item.prices && item.prices.length > 0 && !key && (
+              <div class="flex shrink-0 flex-wrap gap-x-4 gap-y-1 text-sm font-semibold text-brand-700 sm:justify-end">
+                {item.prices.map((price) => (
+                  <span>
+                    {price.label && <span class="mr-1 font-normal text-ink-800/60">{price.label}</span>}
+                    {formatPrice(price.amount)}
+                  </span>
+                ))}
+              </div>
+            )}
+          </li>
+        );
+      })
     }
   </ul>
 
   {
     category.extras && category.extras.length > 0 && (
       <p class="mt-3 text-xs text-ink-800/60">
-        {category.extras.map((extra) => `${extra.label}${extra.appliesTo ? ` (${extra.appliesTo})` : ''} : ${formatPrice(extra.amount)}`).join(' · ')}
+        {category.extras
+          .map((extra) => `${extra.label}${extra.appliesTo ? ` (${extra.appliesTo})` : ''} : ${formatPrice(extra.amount)}`)
+          .join(' · ')}
       </p>
     )
   }
 </section>
+
+<style>
+  /* Visible keyboard focus on the add buttons and the extras summary. */
+  button[data-add]:focus-visible,
+  summary:focus-visible,
+  input[data-extra]:focus-visible {
+    outline: 3px solid #14120f;
+    outline-offset: 2px;
+  }
+</style>
