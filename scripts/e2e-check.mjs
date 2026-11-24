@@ -17,6 +17,15 @@ const checks = [
   ['catégorie boissons', 'Nos boissons'],
   ['teaser IA', 'commande assistée par IA'],
   ['easter egg trigger', 'ai-teaser-easter-egg'],
+  ['badge statut ouvert/fermé', 'data-testid="open-status"'],
+  ['note Google', '4,2 sur 5 · 210 avis Google'],
+  ['lien fiche Google', 'data-testid="google-reviews"'],
+  ['boutons Ajouter du panier', 'data-add'],
+  ['catalogue du panier', 'id="cart-catalog"'],
+  ['barre du panier', 'data-cart-bar'],
+  ['panneau du panier', 'data-cart-dialog'],
+  ['panier : rien envoyé en ligne', "Rien n'est envoyé en ligne"],
+  ['panier : lien tel', 'href="tel:+33297535562"'],
 ];
 
 console.log('→ astro build');

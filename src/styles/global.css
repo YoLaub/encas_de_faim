@@ -27,6 +27,62 @@
   /* Near-black, matches existing brand's dark sections. */
   --color-ink-900: #14120f;
   --color-ink-800: #211d17;
+  /* Muted text: solid color (no opacity) so its contrast can be computed.
+     5.56:1 on cream, 5.93:1 on white. */
+  --color-ink-600: #6b6355;
+
+  /* Neubrutalism, warm version: cream paper, vivid logo green used as a flat fill only
+     (never as text color), hard offset shadows in ink. */
+  --color-cream: #fff7e6;
+  --color-leaf: #7cc75a;
+  --shadow-brut: 4px 4px 0 0 #14120f;
+  --shadow-brut-sm: 2px 2px 0 0 #14120f;
+}
+
+/* Thick ink border + hard shadow: the shared look of cards and buttons. */
+@utility brut-card {
+  border: 3px solid var(--color-ink-900);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-brut);
+}
+
+@utility brut-btn {
+  border: 3px solid var(--color-ink-900);
+  border-radius: 0.75rem;
+  box-shadow: var(--shadow-brut-sm);
+  font-weight: 700;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease;
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+}
+
+/* Visible keyboard focus, same ink color everywhere (3:1+ on cream, white and leaf). */
+:focus-visible {
+  outline: 3px solid var(--color-ink-900);
+  outline-offset: 3px;
+}
+
+/* The single entrance animation of the page: the hero action row. Transform and opacity only,
+   and only when the visitor has not asked for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-in {
+    animation: hero-in 450ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 html {
@@ -35,4 +91,5 @@ html {
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-cream);
 }

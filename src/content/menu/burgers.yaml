@@ -1,6 +1,11 @@
 order: 3
 title: "Nos burgers"
-note: "Steak façon bouchère · +1,50€ avec boisson"
+note: "Steak façon bouchère"
+extras:
+  - label: "Avec boisson"
+    amount: 1.5
+  - label: "Supplément sauce"
+    amount: 0.5
 items:
   - name: "Cheese burger"
     description: "Steak haché, oignon, tomate, salade, cheddar, sauce au choix"

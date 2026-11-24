@@ -1,0 +1,41 @@
+---
+// Static fallback text is rendered at build time (no JS needed to read the hours).
+// The script then replaces it with the live status computed from the same opening hours.
+---
+
+<a
+  href="#infos-title"
+  data-testid="open-status"
+  data-state="unknown"
+  class="open-status brut-btn mx-auto mt-6 inline-flex min-h-11 items-center gap-2 bg-white px-4 py-2 text-sm text-ink-900"
+>
+  <span class="open-status-dot h-3 w-3 rounded-full border-2 border-ink-900 bg-cream" aria-hidden="true"></span>
+  <span data-open-status-label aria-live="polite">Voir les horaires</span>
+</a>
+
+<style>
+  .open-status[data-state='open'] .open-status-dot {
+    background-color: #4ade80;
+  }
+  .open-status[data-state='closed'] .open-status-dot {
+    background-color: #f87171;
+  }
+</style>
+
+<script>
+  import { getOpenStatus } from '../lib/openStatus';
+
+  const badge = document.querySelector<HTMLElement>('[data-testid="open-status"]');
+  const label = badge?.querySelector<HTMLElement>('[data-open-status-label]');
+
+  function refresh() {
+    if (!badge || !label) return;
+    const status = getOpenStatus(new Date());
+    badge.dataset.state = status.isOpen ? 'open' : 'closed';
+    label.textContent = status.label;
+  }
+
+  refresh();
+  // Keep the label right if the tab stays open across a service change.
+  window.setInterval(refresh, 60_000);
+</script>

@@ -9,9 +9,9 @@ export const business = {
 };
 
 export const openingHours = [
-  { days: 'Lundi – Jeudi', ranges: '11h30 – 14h · 18h – 22h' },
-  { days: 'Vendredi', ranges: '11h30 – 14h · 18h – 22h30' },
-  { days: 'Samedi – Dimanche', ranges: '18h – 22h30' },
+  { days: 'Lundi à jeudi', ranges: '11h30 à 14h · 18h à 22h' },
+  { days: 'Vendredi', ranges: '11h30 à 14h · 18h à 22h30' },
+  { days: 'Samedi et dimanche', ranges: '18h à 22h30' },
 ];
 
 export const openingHoursSpecification = [
