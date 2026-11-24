@@ -142,6 +142,12 @@ function unitCents(line: CartLine, catalog: Catalog): number | undefined {
   return price.cents + extras;
 }
 
+/** Price in cents of one extra on a line (0 if it does not apply). */
+export function extraCents(line: CartLine, label: string, catalog: Catalog): number {
+  const item = catalog[line.itemKey];
+  return (item && resolveExtra(item, label, line.variant)?.cents) ?? 0;
+}
+
 export function cartTotalCents(cart: Cart, catalog: Catalog): number {
   return cart.lines.reduce((sum, line) => sum + (unitCents(line, catalog) ?? 0) * line.quantity, 0);
 }
