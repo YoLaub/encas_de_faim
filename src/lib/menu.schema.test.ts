@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatPrice, menuCategorySchema, menuItemSchema } from './menu.schema';
+import { extraSchema, formatPrice, menuCategorySchema, menuItemSchema } from './menu.schema';
 
 describe('menuItemSchema', () => {
   it('accepts an item with multiple sized prices', () => {
@@ -50,6 +50,35 @@ describe('menuCategorySchema', () => {
       order: 1,
       title: 'Nos pizzas',
       items: [],
+    });
+    expect(result.success).toBe(false);
+  });
+});
+
+describe('extraSchema', () => {
+  it('accepts an extra restricted to one price label', () => {
+    const result = extraSchema.safeParse({
+      label: 'Ingrédient supplémentaire',
+      amount: 1.5,
+      appliesTo: '29 cm',
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('accepts an extra that applies to every item of the category', () => {
+    expect(extraSchema.safeParse({ label: 'Supplément viande', amount: 1.5 }).success).toBe(true);
+  });
+
+  it('rejects an extra without a label (the cart needs it to identify the choice)', () => {
+    expect(extraSchema.safeParse({ amount: 1.5 }).success).toBe(false);
+  });
+
+  it('is used by the category schema', () => {
+    const result = menuCategorySchema.safeParse({
+      order: 1,
+      title: 'Nos pizzas',
+      extras: [{ amount: 1.5 }],
+      items: [{ name: 'Marguerita' }],
     });
     expect(result.success).toBe(false);
   });
