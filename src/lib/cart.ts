@@ -1,5 +1,4 @@
-import { z } from 'zod';
-import { formatPrice } from './menu.schema';
+import { formatPrice } from './format';
 import type { MenuCategory } from './menu.schema';
 
 // A helper to prepare a phone order, not a shop: nothing is sent anywhere.
@@ -11,6 +10,8 @@ const MAX_QUANTITY = 99;
 
 export type CatalogItem = {
   key: string;
+  categoryId: string;
+  itemIndex: number;
   name: string;
   categoryTitle: string;
   prices: { label?: string; cents: number }[];
@@ -48,13 +49,15 @@ export function buildCatalog(categories: { id: string; data: MenuCategory }[]): 
       cents: toCents(extra.amount),
       ...(extra.appliesTo ? { appliesTo: extra.appliesTo } : {}),
     }));
-    for (const item of data.items) {
+    for (const [itemIndex, item] of data.items.entries()) {
       if (!item.prices || item.prices.length === 0) continue;
       const base = `${id}/${slugify(item.name)}`;
       let key = base;
       for (let n = 2; key in catalog; n += 1) key = `${base}-${n}`;
       catalog[key] = {
         key,
+        categoryId: id,
+        itemIndex,
         name: item.name,
         categoryTitle: data.title,
         prices: item.prices.map((price) => ({
@@ -160,26 +163,28 @@ export function serializeCart(cart: Cart, catalog: Catalog): string {
   );
 }
 
-const storedLineSchema = z.object({
-  itemKey: z.string(),
-  variant: z.string().optional(),
-  extras: z.array(z.string()),
-  quantity: z.number().int().min(1).max(MAX_QUANTITY),
-});
-const storedCartSchema = z.object({ lines: z.array(z.unknown()) });
+// Plain checks instead of a schema library: this file ships to the browser.
+function parseStoredLine(candidate: unknown): CartLine | undefined {
+  if (typeof candidate !== 'object' || candidate === null) return undefined;
+  const { itemKey, variant, extras, quantity } = candidate as Record<string, unknown>;
+  if (typeof itemKey !== 'string') return undefined;
+  if (variant !== undefined && typeof variant !== 'string') return undefined;
+  if (!Array.isArray(extras) || !extras.every((extra) => typeof extra === 'string')) return undefined;
+  if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QUANTITY) {
+    return undefined;
+  }
+  return { itemKey, ...(variant !== undefined ? { variant } : {}), extras: extras as string[], quantity };
+}
 
 export function loadCart(storage: StorageLike | undefined, catalog: Catalog): Cart {
   try {
     const raw = storage?.getItem(STORAGE_KEY);
     if (!raw) return emptyCart();
-    const parsed = storedCartSchema.safeParse(JSON.parse(raw));
-    if (!parsed.success) return emptyCart();
+    const lines = (JSON.parse(raw) as { lines?: unknown } | null)?.lines;
+    if (!Array.isArray(lines)) return emptyCart();
     // One bad line must not wipe the others: validate line by line.
-    return parsed.data.lines
-      .flatMap((candidate) => {
-        const line = storedLineSchema.safeParse(candidate);
-        return line.success ? [line.data] : [];
-      })
+    return lines
+      .flatMap((candidate) => parseStoredLine(candidate) ?? [])
       .filter((line) => isValid(line, catalog))
       .reduce<Cart>((cart, line) => withLine(cart, { ...line, extras: [...line.extras].sort() }), emptyCart());
   } catch {
