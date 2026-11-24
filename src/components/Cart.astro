@@ -1,0 +1,292 @@
+---
+import Close from './icons/Close.astro';
+import Minus from './icons/Minus.astro';
+import Phone from './icons/Phone.astro';
+import Plus from './icons/Plus.astro';
+import type { Catalog } from '../lib/cart';
+import { business } from '../lib/business';
+
+interface Props {
+  catalog: Catalog;
+}
+
+const { catalog } = Astro.props;
+// "<" is escaped so menu text can never close the script tag.
+const catalogJson = JSON.stringify(catalog).replace(/</g, '\\u003c');
+---
+
+<script type="application/json" id="cart-catalog" set:html={catalogJson} />
+
+<div
+  data-cart-bar
+  hidden
+  class="fixed inset-x-0 bottom-0 z-40 border-t-2 border-ink-900 bg-white px-4 py-3 shadow-[0_-6px_20px_rgba(20,18,15,0.18)]"
+>
+  <div class="mx-auto flex max-w-3xl items-center justify-between gap-3">
+    <p class="text-sm leading-tight">
+      <span class="font-semibold text-ink-900">Ma sélection</span>
+      <span data-cart-summary class="block text-ink-800"></span>
+    </p>
+    <button
+      type="button"
+      data-cart-open
+      aria-haspopup="dialog"
+      class="min-h-11 rounded-full bg-ember-700 px-5 text-sm font-semibold text-white hover:bg-ember-600"
+    >
+      Voir ma sélection
+    </button>
+  </div>
+</div>
+
+<dialog
+  data-cart-dialog
+  aria-labelledby="cart-title"
+  class="mx-auto mt-auto mb-0 max-h-[88dvh] w-full max-w-lg overflow-y-auto rounded-t-2xl border-2 border-ink-900 bg-white p-5 text-ink-900 backdrop:bg-black/60 sm:my-auto sm:rounded-2xl"
+>
+  <div class="flex items-center justify-between gap-4">
+    <h2 id="cart-title" class="font-display text-2xl font-bold">Ma sélection</h2>
+    <button
+      type="button"
+      data-cart-close
+      aria-label="Fermer ma sélection"
+      class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-900/30 hover:bg-brand-50"
+    >
+      <Close class="h-5 w-5" />
+    </button>
+  </div>
+
+  <ul data-cart-lines class="mt-4 divide-y divide-brand-100"></ul>
+
+  <p data-cart-total aria-live="polite" class="mt-4 text-lg font-semibold"></p>
+  <p class="mt-1 text-sm text-ink-800">
+    Rien n'est envoyé en ligne. Cette sélection sert à préparer votre appel, les prix sont indicatifs.
+  </p>
+
+  <p data-cart-closed hidden class="mt-4 rounded-lg bg-ember-50 p-3 text-sm font-medium text-ember-700"></p>
+
+  <a
+    data-cart-call
+    href={`tel:${business.phoneHref}`}
+    class="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-ember-700 px-6 text-base font-semibold text-white hover:bg-ember-600"
+  >
+    <Phone class="h-5 w-5" />
+    <span data-cart-call-label>Appeler {business.phoneDisplay}</span>
+  </a>
+
+  <div class="mt-3 flex flex-wrap gap-2">
+    <button
+      type="button"
+      data-cart-copy
+      hidden
+      class="min-h-11 rounded-full border border-ink-900/40 px-4 text-sm font-medium hover:bg-brand-50"
+    >
+      Copier le récapitulatif
+    </button>
+    <button
+      type="button"
+      data-cart-clear
+      class="min-h-11 rounded-full border border-ink-900/40 px-4 text-sm font-medium hover:bg-brand-50"
+    >
+      Vider ma sélection
+    </button>
+  </div>
+</dialog>
+
+<p class="sr-only" role="status" aria-live="polite" data-cart-announce></p>
+
+<style is:global>
+  /* Keeps the end of the page reachable above the fixed bar. */
+  body.has-cart-bar {
+    padding-bottom: 5.5rem;
+  }
+  [data-cart-bar]:focus-within,
+  dialog[data-cart-dialog] button:focus-visible,
+  dialog[data-cart-dialog] a:focus-visible,
+  [data-cart-bar] button:focus-visible {
+    outline: 3px solid #14120f;
+    outline-offset: 2px;
+  }
+</style>
+
+<script>
+  import {
+    addItem,
+    cartTotalCents,
+    changeQuantity,
+    clearCart,
+    lineId,
+    loadCart,
+    saveCart,
+    serializeCart,
+  } from '../lib/cart';
+  import type { Cart, Catalog } from '../lib/cart';
+  import { formatPrice } from '../lib/format';
+  import { getOpenStatus } from '../lib/openStatus';
+
+  const NBSP = ' ';
+  const catalog: Catalog = JSON.parse(document.getElementById('cart-catalog')!.textContent ?? '{}');
+
+  function getStorage(): Storage | undefined {
+    try {
+      return window.localStorage;
+    } catch {
+      return undefined; // storage blocked: the cart works, it just is not remembered
+    }
+  }
+  const storage = getStorage();
+
+  const bar = document.querySelector<HTMLElement>('[data-cart-bar]')!;
+  const summary = document.querySelector<HTMLElement>('[data-cart-summary]')!;
+  const dialog = document.querySelector<HTMLDialogElement>('[data-cart-dialog]')!;
+  const linesList = dialog.querySelector<HTMLElement>('[data-cart-lines]')!;
+  const totalEl = dialog.querySelector<HTMLElement>('[data-cart-total]')!;
+  const closedEl = dialog.querySelector<HTMLElement>('[data-cart-closed]')!;
+  const callLabel = dialog.querySelector<HTMLElement>('[data-cart-call-label]')!;
+  const copyButton = dialog.querySelector<HTMLButtonElement>('[data-cart-copy]')!;
+  const announcer = document.querySelector<HTMLElement>('[data-cart-announce]')!;
+
+  let cart: Cart = loadCart(storage, catalog);
+
+  function announce(message: string) {
+    // Clearing first makes screen readers repeat an identical message.
+    announcer.textContent = '';
+    window.setTimeout(() => (announcer.textContent = message), 50);
+  }
+
+  function describe(line: Cart['lines'][number]): string {
+    const item = catalog[line.itemKey];
+    return `${item.name}${line.variant ? ` (${line.variant})` : ''}`;
+  }
+
+  // Text rendered at build time ("Appeler 02 97 53 55 62"), restored while the shop is open.
+  const openCallText = callLabel.textContent ?? '';
+
+  function renderCallState() {
+    const status = getOpenStatus(new Date());
+    closedEl.hidden = status.isOpen;
+    if (status.isOpen) {
+      callLabel.textContent = openCallText;
+    } else {
+      closedEl.textContent = `Fermé pour le moment, on rouvre ${status.nextOpening}. Votre sélection vous attend.`;
+      callLabel.textContent = `Rappeler ${status.nextOpening}`;
+    }
+  }
+
+  function render() {
+    const count = cart.lines.reduce((sum, line) => sum + line.quantity, 0);
+    const total = formatPrice(cartTotalCents(cart, catalog) / 100);
+    bar.hidden = count === 0;
+    document.body.classList.toggle('has-cart-bar', count > 0);
+    summary.textContent = `${count} ${count > 1 ? 'articles' : 'article'} · ${total}`;
+    totalEl.textContent = `Total estimé${NBSP}: ${total}`;
+
+    linesList.replaceChildren(
+      ...cart.lines.map((line) => {
+        const id = lineId(line);
+        const row = document.createElement('li');
+        row.className = 'flex items-center justify-between gap-3 py-3';
+
+        const text = document.createElement('div');
+        const name = document.createElement('p');
+        name.className = 'font-medium';
+        name.textContent = describe(line);
+        text.append(name);
+        if (line.extras.length > 0) {
+          const extras = document.createElement('p');
+          extras.className = 'text-sm text-ink-800';
+          extras.textContent = `+ ${line.extras.join(', ')}`;
+          text.append(extras);
+        }
+        const price = document.createElement('p');
+        price.className = 'text-sm font-semibold text-brand-700';
+        price.textContent = formatPrice(cartTotalCents({ lines: [line] }, catalog) / 100);
+        text.append(price);
+
+        const controls = document.createElement('div');
+        controls.className = 'flex shrink-0 items-center gap-1';
+        const make = (delta: number, label: string, svg: string) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.dataset.lineId = id;
+          button.dataset.delta = String(delta);
+          button.setAttribute('aria-label', `${label} ${describe(line)}`);
+          button.className =
+            'inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-900/40 hover:bg-brand-50';
+          button.innerHTML = svg;
+          return button;
+        };
+        const icon = (d: string) =>
+          `<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"></path></svg>`;
+        const qty = document.createElement('span');
+        qty.className = 'w-6 text-center font-semibold';
+        qty.textContent = String(line.quantity);
+        controls.append(make(-1, 'Retirer un', icon('M5 12h14')), qty, make(1, 'Ajouter un', icon('M12 5v14M5 12h14')));
+
+        row.append(text, controls);
+        return row;
+      }),
+    );
+
+    renderCallState();
+    if (count === 0 && dialog.open) dialog.close();
+  }
+
+  function commit(next: Cart) {
+    cart = next;
+    saveCart(storage, cart);
+    render();
+  }
+
+  // Add buttons live in the menu (outside this component): delegate from the document.
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const add = target.closest<HTMLButtonElement>('button[data-add]');
+    if (add) {
+      const row = add.closest('li');
+      const extras = [...(row?.querySelectorAll<HTMLInputElement>('input[data-extra]:checked') ?? [])].map(
+        (input) => input.value,
+      );
+      const itemKey = add.dataset.itemKey!;
+      const variant = add.dataset.variant;
+      const next = addItem(cart, { itemKey, variant, extras }, catalog);
+      if (next === cart) {
+        announce('Ce supplément n’est pas disponible pour ce choix.');
+        return;
+      }
+      const label = describe({ itemKey, variant, extras, quantity: 1 });
+      commit(next);
+      announce(`${label} ajouté à votre sélection.`);
+      row?.querySelectorAll<HTMLInputElement>('input[data-extra]').forEach((input) => (input.checked = false));
+      row?.querySelector<HTMLDetailsElement>('details[data-extras]')?.removeAttribute('open');
+      return;
+    }
+
+    const step = target.closest<HTMLButtonElement>('button[data-line-id]');
+    if (step) commit(changeQuantity(cart, step.dataset.lineId!, Number(step.dataset.delta)));
+  });
+
+  document.querySelector('[data-cart-open]')!.addEventListener('click', () => dialog.showModal());
+  dialog.querySelector('[data-cart-close]')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close(); // click on the backdrop
+  });
+  dialog.querySelector('[data-cart-clear]')!.addEventListener('click', () => {
+    commit(clearCart());
+    announce('Sélection vidée.');
+  });
+
+  if (navigator.clipboard) {
+    copyButton.hidden = false;
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(serializeCart(cart, catalog));
+        announce('Récapitulatif copié.');
+      } catch {
+        announce('Copie impossible sur cet appareil.');
+      }
+    });
+  }
+
+  render();
+  window.setInterval(renderCallState, 60_000);
+</script>

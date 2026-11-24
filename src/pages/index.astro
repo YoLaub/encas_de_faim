@@ -7,9 +7,12 @@ import OpenStatusBadge from '../components/OpenStatusBadge.astro';
 import GoogleReviewsLink from '../components/GoogleReviewsLink.astro';
 import Phone from '../components/icons/Phone.astro';
 import MapPin from '../components/icons/MapPin.astro';
+import Cart from '../components/Cart.astro';
 import { business, openingHours } from '../lib/business';
+import { buildCatalog } from '../lib/cart';
 
 const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b.data.order);
+const catalog = buildCatalog(categories.map((category) => ({ id: category.id, data: category.data })));
 ---
 
 <BaseLayout
@@ -81,7 +84,7 @@ const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b
     </nav>
 
     <div class="mt-10 space-y-12">
-      {categories.map((category) => <MenuCategory category={category.data} slug={category.id} />)}
+      {categories.map((category) => <MenuCategory category={category.data} slug={category.id} {catalog} />)}
     </div>
   </main>
 
@@ -124,4 +127,6 @@ const categories = (await getCollection('menu')).sort((a, b) => a.data.order - b
   <footer class="bg-ink-900 px-4 py-8 text-center text-sm text-brand-100/70">
     <p>en-cas 2 faim · {business.streetAddress}, {business.postalCode} {business.city} · {business.phoneDisplay}</p>
   </footer>
+
+  <Cart {catalog} />
 </BaseLayout>
